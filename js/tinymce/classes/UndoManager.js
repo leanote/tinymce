@@ -29,6 +29,9 @@ define("tinymce/UndoManager", [
 	return function(editor) {
 		var self = this, index = 0, data = [], beforeBookmark, isFirstTypedCharacter, locks = 0;
 
+		// life ace
+		var canAdd = true;
+
 		/**
 		 * Returns a trimmed version of the editor contents to be used for the undo level. This
 		 * will remove any data-mce-bogus="all" marked elements since these are used for UI it will also
@@ -40,6 +43,11 @@ define("tinymce/UndoManager", [
 		 * @return {String} HTML contents of the editor excluding some internal bogus elements.
 		 */
 		function getContent() {
+			// life ace
+			if(window.LeaAce && window.getEditorContent) {
+				return getEditorContent();
+			}
+
 			var content = editor.getContent({format: 'raw', no_events: 1});
 			var bogusAllRegExp = /<(\w+) [^>]*data-mce-bogus="all"[^>]*>/g;
 			var endTagIndex, index, matchLength, matches, shortEndedElements, schema = editor.schema;
@@ -103,6 +111,18 @@ define("tinymce/UndoManager", [
 		editor.on('KeyUp', function(e) {
 			var keyCode = e.keyCode;
 
+			// life ace
+			// ctrl + shift + c, command + shift + c 代码
+			if((e.metaKey && e.shiftKey) || (e.ctrlKey && e.shiftKey)) {
+				return;
+			}
+
+			// life ace
+			// 在ace中回车也会加history
+			if(keyCode == 13 && window.LeaAce && LeaAce.nowIsInAce()) {
+				return;
+			}
+
 			if ((keyCode >= 33 && keyCode <= 36) || (keyCode >= 37 && keyCode <= 40) || keyCode == 45 || keyCode == 13 || e.ctrlKey) {
 				addNonTypingUndoLevel();
 				editor.nodeChanged();
@@ -133,12 +153,24 @@ define("tinymce/UndoManager", [
 		editor.on('KeyDown', function(e) {
 			var keyCode = e.keyCode;
 
+			// life ace
+			// 在ace中回车也会加history
+			if(keyCode == 13/* && LeaAce.nowIsInAce()*/) {
+				return;
+			}
+
 			// Is caracter positon keys left,right,up,down,home,end,pgdown,pgup,enter
 			if ((keyCode >= 33 && keyCode <= 36) || (keyCode >= 37 && keyCode <= 40) || keyCode == 45) {
 				if (self.typing) {
 					addNonTypingUndoLevel(e);
 				}
 
+				return;
+			}
+
+			// life ace
+			// ctrl + shift + c, command + shift + c 代码
+			if((e.metaKey && e.shiftKey) || (e.ctrlKey || e.shiftKey)) {
 				return;
 			}
 
@@ -192,6 +224,11 @@ define("tinymce/UndoManager", [
 				}
 			},
 
+			// life ace
+			setCanAdd: function(status) {
+				canAdd = status;
+			},
+
 			/**
 			 * Adds a new undo level/snapshot to the undo list.
 			 *
@@ -201,6 +238,11 @@ define("tinymce/UndoManager", [
 			 * @return {Object} Undo level that got added or null it a level wasn't needed.
 			 */
 			add: function(level, event) {
+				// life ace
+				if(!canAdd) {
+					return;
+				}
+
 				var i, settings = editor.settings, lastLevel;
 
 				level = level || {};

@@ -71,6 +71,16 @@ define("tinymce/Editor", [
 	URI, ScriptLoader, EventUtils, WindowManager,
 	Schema, DomParser, Quirks, Env, Tools, EditorObservable, Shortcuts
 ) {
+	// life
+	/*
+	if(typeof LeaAce == "undefined") {
+		window.LeaAce = {
+			isInAce: function() {},
+			nowIsInAce: function(){}
+		};
+	}
+	*/
+
 	// Shorten these names
 	var DOM = DOMUtils.DOM, ThemeManager = AddOnManager.ThemeManager, PluginManager = AddOnManager.PluginManager;
 	var extend = Tools.extend, each = Tools.each, explode = Tools.explode;
@@ -666,10 +676,8 @@ define("tinymce/Editor", [
 				//src: url || 'javascript:""', // Workaround for HTTPS warning in IE6/7
 				frameBorder: '0',
 				allowTransparency: "true",
-				title: self.editorManager.translate(
-						"Rich Text Area. Press ALT-F9 for menu. " +
-						"Press ALT-F10 for toolbar. Press ALT-0 for help"
-				),
+				// life
+				title: self.editorManager.translate("Leanote Editor"),
 				style: {
 					width: '100%',
 					height: h,
@@ -1619,6 +1627,18 @@ define("tinymce/Editor", [
 		setContent: function(content, args) {
 			var self = this, body = self.getBody(), forcedRootBlockName;
 
+			/**
+			 * life ace
+			 */
+			// 先destroy之前的ace
+			if(window.LeaAce && window.LeaAce.canAce) { // 有些地方不用, 比如单页面
+				var everContent = $(self.getBody());
+				if(everContent) {
+					LeaAce.destroyAceFromContent(everContent);
+				}
+			}
+			// end
+
 			// Setup args object
 			args = args || {};
 			args.format = args.format || 'html';
@@ -1673,6 +1693,23 @@ define("tinymce/Editor", [
 					self.selection.normalize();
 				}*/
 			}
+
+			/**
+			 * life ace
+			 */
+			if(window.LeaAce && window.LeaAce.canAce) {
+				if(LeaAce.canAce() && LeaAce.isAce) {
+					try {
+						LeaAce.initAceFromContent(self);
+					} catch(e) {
+						log(e);
+					}
+				} else {
+					// 为了在firefox下有正常的显示
+					$("#editorContent pre").removeClass("ace-tomorrow ace_editor");
+				}
+			}
+			// end
 
 			return args.content;
 		},
@@ -1745,6 +1782,11 @@ define("tinymce/Editor", [
 			}
 
 			this.execCommand('mceInsertContent', false, content);
+		},
+
+		// life
+		insertRawContent: function(content) {
+			this.execCommand('mceInsertRawHTML', false, content);
 		},
 
 		/**

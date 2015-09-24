@@ -495,12 +495,17 @@ define("tinymce/dom/Selection", [
 				var bookmark = self.lastFocusBookmark;
 
 				// Convert bookmark to range IE 11 fix
-				if (bookmark.startContainer) {
-					rng = doc.createRange();
-					rng.setStart(bookmark.startContainer, bookmark.startOffset);
-					rng.setEnd(bookmark.endContainer, bookmark.endOffset);
-				} else {
-					rng = bookmark;
+				// life ace, 不知道会出什么错
+				try {
+					if (bookmark.startContainer) {
+						rng = doc.createRange();
+						rng.setStart(bookmark.startContainer, bookmark.startOffset);
+						rng.setEnd(bookmark.endContainer, bookmark.endOffset);
+					} else {
+						rng = bookmark;
+					}
+				} catch(e) {
+					console.trace(e);
 				}
 
 				return rng;

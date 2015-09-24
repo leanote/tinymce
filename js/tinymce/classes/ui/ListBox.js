@@ -85,6 +85,31 @@ define("tinymce/ui/ListBox", [
 		},
 
 		/**
+		 * disable/enable 某一list的item
+		 * leanote ace life ace
+		 * value = convert, state = true | false
+		 */
+		diableValue: function(value, state) {
+			var self = this;
+			var menu = self.settings.menu;
+			if (self.menu) {
+				self.menu.items().each(function(ctrl) {// menuitem
+					if(ctrl.value() === value) {
+						ctrl.disabled(state);
+						return;
+					}
+				});
+			} else {
+				for (var i = 0; i < menu.length; i++) {
+					if(menu[i].value == value) {
+						menu[i].disabled = state;
+						return;
+					}
+				}
+			}
+		},
+
+		/**
 		 * Getter/setter function for the control value.
 		 *
 		 * @method value
