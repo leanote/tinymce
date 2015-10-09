@@ -189,7 +189,7 @@ tinymce.PluginManager.add('leaui_image', function(editor, url) {
 		icon: 'image',
 		tooltip: 'Insert/edit image',
 		onclick: showDialog,
-		stateSelector: 'img:not([data-mind-json])'
+		stateSelector: 'img:not([data-mce-object])'
 	});
 
 	editor.addMenuItem('leaui_image', {
