@@ -57,10 +57,10 @@ tinymce.PluginManager.add('leaui_image', function(editor, url) {
 		LEAUI_DATAS = datas;
 
 		function GetTheHtml(){
-			var html = '<iframe id="leauiIfr" src="'+ url + '/index.html'+ '?' + new Date().getTime() + '" frameborder="0"></iframe>';
+			var html = '<iframe id="leauiIfr" src="/album/index'+ '?' + new Date().getTime() + '" frameborder="0"></iframe>';
 			return html;
 		}
-		
+
 		var w = $(document).width() - 10;
 		if(w > 805) {
 			w = 805;
@@ -189,7 +189,7 @@ tinymce.PluginManager.add('leaui_image', function(editor, url) {
 		icon: 'image',
 		tooltip: 'Insert/edit image',
 		onclick: showDialog,
-		stateSelector: 'img:not([data-mce-object])'
+		stateSelector: 'img:not([data-mind-json])'
 	});
 
 	editor.addMenuItem('leaui_image', {
