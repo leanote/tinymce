@@ -50,6 +50,9 @@ tinymce.PluginManager.add('leanote_code', function(editor, url) {
 
 	// brush 刷子
 	function toggleCode(brush) {
+		if (LEA.readOnly) {
+			return;
+		}
 		ed = tinymce.activeEditor;
 		var node = ed.selection.getNode();
 
@@ -331,7 +334,7 @@ tinymce.PluginManager.add('leanote_code', function(editor, url) {
 	ed.addCommand('toggleCode', toggleCode);
     
     ed.addShortcut('ctrl+shift+c', '', 'toggleCode');
-	ed.addShortcut('command+shift+c', '', 'toggleCode');
+	ed.addShortcut('meta+shift+c', '', 'toggleCode');
 
 	// life
 	if(LeaAce.canAce()) {
@@ -373,7 +376,7 @@ tinymce.PluginManager.add('leanote_code', function(editor, url) {
 				*/
 				// 如果是在li下的, 就不要控制
 				var node = ed.selection.getNode();
-				if (node && node.nodeName === 'LI') {
+				if (node && (node.nodeName == 'LI' || $(node.closest('li')).length > 0)) {
 					return true;
 				}
 				ed.insertContent("&nbsp;&nbsp;&nbsp;&nbsp;");
