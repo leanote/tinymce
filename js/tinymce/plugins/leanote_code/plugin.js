@@ -272,6 +272,9 @@ tinymce.PluginManager.add('leanote_code', function(editor, url) {
             "Latex:latex",
             "Xml:xml",
             "ActionScript:actionScript",
+            "Matalab:matalab",
+            "Scala:scala",
+            "Sql:sql"
          ];
 		var items = [];
     	for(var i in langs) {
@@ -331,7 +334,7 @@ tinymce.PluginManager.add('leanote_code', function(editor, url) {
 	ed.addCommand('toggleCode', toggleCode);
     
     ed.addShortcut('ctrl+shift+c', '', 'toggleCode');
-	ed.addShortcut('command+shift+c', '', 'toggleCode');
+	ed.addShortcut('meta+shift+c', '', 'toggleCode');
 
 	// life
 	if(LeaAce.canAce()) {
