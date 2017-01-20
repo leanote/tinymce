@@ -13,7 +13,13 @@ TinyMCE For Leanote
 * grunt minify
 
 打包成一个
+
+for web
 * grunt bundle --themes leanote --plugins autolink,link,leaui_image,leaui_mind,lists,hr,paste,searchreplace,leanote_nav,leanote_code,tabfocus,table,directionality,textcolor
+
+for desktop
+* grunt bundle --themes leanote --plugins autolink,link,image,leaui_mindmap,lists,hr,paste,searchreplace,leanote_nav,leanote_code,tabfocus,table,directionality,textcolor
+
 
 ## 注意
 

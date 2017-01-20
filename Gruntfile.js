@@ -699,7 +699,7 @@ module.exports = function(grunt) {
 	grunt.loadTasks("tools/tasks");
 
 	grunt.registerTask("lint", ["eslint", "jshint", "jscs"]);
-	grunt.registerTask("minify", ["amdlc", "uglify", "skin", "less"]);
+	grunt.registerTask("minify", ["amdlc", "uglify", ]); // "skin", "less"
 	grunt.registerTask("test", ["qunit"]);
 	grunt.registerTask("sc-test", ["connect", "clean:saucelabs", "saucelabs-qunit"]);
 	grunt.registerTask("default", ["lint", "minify", "test", "clean:release", "moxiezip", "nugetpack"]);
