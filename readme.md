@@ -13,7 +13,7 @@ TinyMCE For Leanote
 * grunt minify
 
 打包成一个
-* grunt bundle --themes leanote --plugins autolink,link,leaui_image,leaui_mindmap,lists,hr,paste,searchreplace,leanote_nav,leanote_code,tabfocus,table,directionality,textcolor
+* grunt bundle --themes=leanote --plugins=autolink,link,leaui_image,leaui_mindmap,lists,hr,paste,searchreplace,leanote_nav,leanote_code,tabfocus,table,directionality,textcolor
 
 ## 注意
 
@@ -57,7 +57,7 @@ Displays the various build tasks.
 
 Bundle themes and plugins into a single file
 ---------------------------------------------
-`grunt bundle --themes modern --plugins table,paste`
+`grunt bundle --themes=modern --plugins=table,paste`
 Minifies the core, adds the modern theme and adds the table and paste plugin into tinymce.min.js.
 
 Contributing to the TinyMCE project
